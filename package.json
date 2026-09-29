@@ -1,0 +1,23 @@
+{
+  "name": "simple-todo-webapp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A simple to-do list: Express REST API + SQLite database + plain HTML/CSS/JS frontend.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node test/api.test.js && node test/frontend.test.js"
+  },
+  "keywords": [
+    "todo",
+    "express",
+    "sqlite",
+    "rest-api"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "express": "^5.2.1"
+  }
+}

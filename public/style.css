@@ -1,0 +1,515 @@
+/* style.css
+   ---------------------------------------------------------------------------
+   Plain CSS, no frameworks. Colours are kept in variables at the top so you
+   can change the whole look by editing just this block.
+*/
+
+:root {
+  --bg: #f4f6fb;
+  --surface: #ffffff;
+  --border: #e2e6ef;
+  --text: #1f2430;
+  --text-muted: #6b7385;
+  --primary: #4f6ef7;
+  --primary-dark: #3b56d4;
+  --danger: #d9534f;
+  --success: #2f9e6f;
+  --shadow: 0 10px 30px rgba(31, 36, 48, 0.08);
+  --radius: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 32px 16px 64px;
+  background: linear-gradient(180deg, #eef1fa 0%, #f7f8fc 100%);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Visually hidden, but still read out by screen readers. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.app {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.app__title {
+  margin: 0;
+  font-size: 1.7rem;
+  letter-spacing: -0.02em;
+}
+
+.app__subtitle {
+  margin: 6px 0 22px;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+/* ---- Add form ---------------------------------------------------------- */
+
+.add-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.add-form__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 12px 14px;
+  font: inherit;
+  color: inherit;
+  background: #fbfcff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.add-form__input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.15);
+}
+
+.btn {
+  padding: 12px 18px;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:hover {
+  background: var(--primary-dark);
+}
+
+.btn--ghost {
+  color: var(--text-muted);
+  background: transparent;
+  border-color: var(--border);
+  font-weight: 500;
+  padding: 8px 14px;
+}
+
+.btn--ghost:hover:not(:disabled) {
+  color: var(--danger);
+  background: #fdf1f1;
+  border-color: #f3c9c9;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---- Search + sort controls -------------------------------------------- */
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.controls__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 9px 12px;
+  font: inherit;
+  color: inherit;
+  background: #fbfcff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.controls__input:focus,
+.controls__select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.15);
+}
+
+.controls__select {
+  padding: 9px 10px;
+  font: inherit;
+  color: inherit;
+  background: #fbfcff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* ---- Undo toast -------------------------------------------------------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 12px 10px 18px;
+  color: #fff;
+  background: #2b3142;
+  border-radius: 999px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  z-index: 10;
+}
+
+.toast[hidden] {
+  display: none;
+}
+
+.toast__message {
+  font-size: 0.9rem;
+}
+
+.toast .btn--ghost {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.toast .btn--ghost:hover {
+  color: #2b3142;
+  background: #fff;
+}
+
+/* ---- Toolbar (filters + clear done) ------------------------------------ */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.filters {
+  display: inline-flex;
+  gap: 4px;
+  padding: 3px;
+  background: #f1f3f9;
+  border-radius: 999px;
+}
+
+.filter {
+  padding: 6px 14px;
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.filter:hover {
+  color: var(--text);
+}
+
+.filter.is-active {
+  color: #fff;
+  background: var(--primary);
+}
+
+/* ---- Status message ---------------------------------------------------- */
+
+.status {
+  min-height: 1.2em;
+  margin: 12px 2px 0;
+  font-size: 0.85rem;
+  color: var(--success);
+}
+
+.status.is-error {
+  color: var(--danger);
+}
+
+/* ---- The list ---------------------------------------------------------- */
+
+.todo-list {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.todo {
+  border-bottom: 1px solid var(--border);
+}
+
+.todo:last-child {
+  border-bottom: none;
+}
+
+.todo:hover {
+  background: #fafbff;
+}
+
+/* The visible line: handle, checkbox, title, buttons. */
+.todo__main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 4px;
+}
+
+.todo__text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Only rows in the "All" view (and in "My order" sort) are draggable. */
+.todo-list--droppable .todo {
+  cursor: grab;
+}
+
+.todo.is-dragging {
+  opacity: 0.45;
+  background: #eef1ff;
+}
+
+.todo__handle {
+  padding: 0 2px;
+  color: #c3c9d8;
+  user-select: none;
+}
+
+.todo__checkbox {
+  flex: 0 0 auto;
+  width: 19px;
+  height: 19px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.todo__title {
+  display: block;
+  overflow-wrap: anywhere;
+  cursor: text;
+}
+
+.todo.is-done .todo__title {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+/* Small labels under the title: due date and "has a note". */
+.todo__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.badge {
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: #eef1f7;
+  border-radius: 999px;
+}
+
+.badge--today {
+  color: #8a5a00;
+  background: #fff2d6;
+}
+
+.badge--overdue {
+  color: #a33a36;
+  background: #fdeaea;
+}
+
+.todo.is-done .badge {
+  opacity: 0.6;
+}
+
+/* The details panel that holds the note and the due date. */
+.todo__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 0 12px 34px;
+  padding: 14px;
+  background: #f7f9ff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.todo__panel[hidden] {
+  display: none;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field__label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.field__input {
+  padding: 9px 11px;
+  font: inherit;
+  color: inherit;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  resize: vertical;
+}
+
+.field__input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.15);
+}
+
+.field__hint {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* The inline rename input replaces the title while editing. */
+.todo__edit {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 6px 8px;
+  font: inherit;
+  color: inherit;
+  background: #fff;
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+}
+
+.todo__edit:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.15);
+}
+
+.todo__actions {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  margin-left: auto;
+}
+
+/* Small labelled buttons, including the red Delete button. */
+.btn-text {
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-text:hover:not(:disabled) {
+  color: var(--primary-dark);
+  border-color: #c3cdf7;
+  background: #eef1ff;
+}
+
+/* The Details button while its panel is open. */
+.btn-text.is-open {
+  color: #fff;
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-text.is-open:hover:not(:disabled) {
+  color: #fff;
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+.btn-text--danger:hover:not(:disabled) {
+  color: #fff;
+  background: var(--danger);
+  border-color: var(--danger);
+}
+
+.btn-text:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ---- Empty state + footer --------------------------------------------- */
+
+.empty-state {
+  margin: 26px 0;
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 0.92rem;
+}
+
+.app__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.counts {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+@media (max-width: 520px) {
+  .app {
+    padding: 20px 16px;
+  }
+
+  .app__footer {
+    flex-direction: column;
+  }
+}

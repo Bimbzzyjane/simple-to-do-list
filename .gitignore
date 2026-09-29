@@ -1,0 +1,10 @@
+# Dependencies (re-create with: npm install)
+node_modules/
+
+# The SQLite database and its journal files (created on first run)
+data/
+
+# Logs / OS noise
+*.log
+Thumbs.db
+.DS_Store

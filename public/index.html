@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Simple To-Do List</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="app__header">
+        <h1 class="app__title">My To-Do List</h1>
+        <p class="app__subtitle">Add a task, tick it off, drag it to reorder.</p>
+      </header>
+
+      <!-- Add a new todo -->
+      <form id="add-form" class="add-form" autocomplete="off">
+        <label class="sr-only" for="new-title">New task</label>
+        <input
+          id="new-title"
+          class="add-form__input"
+          type="text"
+          name="title"
+          placeholder="What needs to be done?"
+          maxlength="200"
+          required
+        />
+        <button class="btn" type="submit">Add</button>
+      </form>
+
+      <!-- Search and sorting -->
+      <div class="controls">
+        <label class="sr-only" for="search">Search tasks and notes</label>
+        <input
+          id="search"
+          class="controls__input"
+          type="search"
+          placeholder="Search tasks and notes..."
+          autocomplete="off"
+        />
+        <label class="sr-only" for="sort">Sort tasks</label>
+        <select id="sort" class="controls__select">
+          <option value="manual">My order</option>
+          <option value="due">Due date</option>
+          <option value="az">A to Z</option>
+        </select>
+      </div>
+
+      <!-- Filter + bulk actions -->
+      <div class="toolbar">
+        <div class="filters" role="group" aria-label="Filter tasks">
+          <button class="filter is-active" type="button" data-filter="all">All</button>
+          <button class="filter" type="button" data-filter="active">Active</button>
+          <button class="filter" type="button" data-filter="completed">Done</button>
+        </div>
+        <button id="clear-completed" class="btn btn--ghost" type="button">
+          Clear done
+        </button>
+      </div>
+
+      <!-- Messages ("Task added", error notices ...) -->
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+
+      <!-- The list itself is rendered by app.js -->
+      <ul id="todo-list" class="todo-list"></ul>
+
+      <p id="empty-state" class="empty-state" hidden></p>
+
+      <footer class="app__footer">
+        <span id="counts" class="counts"></span>
+        <span class="hint">
+          Tip: drag a row to move it, double-click the text to rename, and use
+          <b>Details</b> to add a note or a due date.
+        </span>
+      </footer>
+    </main>
+
+    <!-- Undo bar, shown briefly after something is deleted -->
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden>
+      <span id="toast-message" class="toast__message"></span>
+      <button id="toast-undo" class="btn btn--ghost" type="button">Undo</button>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
