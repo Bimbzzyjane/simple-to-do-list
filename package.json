@@ -17,7 +17,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "better-sqlite3": "^13.0.3",
+    "@libsql/client": "^0.18.0",
     "express": "^5.2.1"
   }
 }

@@ -119,13 +119,25 @@ function handleError(error, req, res, next) {
 // Routes
 // ---------------------------------------------------------------------------
 
+// The database creates/updates its table when server.js is first loaded. This
+// makes every request wait until that is finished, so nothing can arrive before
+// the table is ready.
+app.use(async (req, res, next) => {
+  try {
+    await db.ready;
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
 // List every todo.
-app.get('/api/todos', (req, res) => {
-  res.json(db.listTodos());
+app.get('/api/todos', async (req, res) => {
+  res.json(await db.listTodos());
 });
 
 // Add a todo. Only "title" is required; "note" and "due" are optional.
-app.post('/api/todos', (req, res) => {
+app.post('/api/todos', async (req, res) => {
   const body = req.body ?? {};
   const title = parseTitle(body.title);
 
@@ -143,7 +155,7 @@ app.post('/api/todos', (req, res) => {
   if (!due.ok) return badRequest(res, due.message);
 
   res.status(201).json(
-    db.createTodo({
+    await db.createTodo({
       title,
       note: note.value ?? '',
       due: due.value ?? null,
@@ -156,7 +168,7 @@ app.post('/api/todos', (req, res) => {
 // Express would treat the word "order" as an id.
 
 // Save a new order. Body: { "ids": [3, 1, 2] }
-app.put('/api/todos/order', (req, res) => {
+app.put('/api/todos/order', async (req, res) => {
   const body = req.body ?? {};
   const rawIds = body.ids;
 
@@ -175,7 +187,7 @@ app.put('/api/todos/order', (req, res) => {
   }
 
   try {
-    res.json(db.reorderTodos(ids));
+    res.json(await db.reorderTodos(ids));
   } catch (error) {
     // db.reorderTodos throws when the list does not match what we have stored.
     return badRequest(res, error.message);
@@ -184,15 +196,15 @@ app.put('/api/todos/order', (req, res) => {
 
 // Remove all completed todos. Declared before the ":id" routes for the same
 // reason as above.
-app.delete('/api/todos/completed', (req, res) => {
-  const deleted = db.clearCompleted();
-  res.json({ deleted, todos: db.listTodos() });
+app.delete('/api/todos/completed', async (req, res) => {
+  const deleted = await db.clearCompleted();
+  res.json({ deleted, todos: await db.listTodos() });
 });
 
 // ---- Single todo -----------------------------------------------------------
 
 // Update one todo. Any of "title", "note", "due" and "completed" may be sent.
-app.patch('/api/todos/:id', (req, res) => {
+app.patch('/api/todos/:id', async (req, res) => {
   const id = parseId(req.params.id);
   if (id === null) return badRequest(res, 'The todo id must be a positive whole number.');
 
@@ -236,18 +248,18 @@ app.patch('/api/todos/:id', (req, res) => {
     );
   }
 
-  const updated = db.updateTodo(id, changes);
+  const updated = await db.updateTodo(id, changes);
   if (updated === null) return notFound(res, `No todo with id ${id}.`);
 
   return res.json(updated);
 });
 
 // Delete one todo.
-app.delete('/api/todos/:id', (req, res) => {
+app.delete('/api/todos/:id', async (req, res) => {
   const id = parseId(req.params.id);
   if (id === null) return badRequest(res, 'The todo id must be a positive whole number.');
 
-  if (!db.deleteTodo(id)) return notFound(res, `No todo with id ${id}.`);
+  if (!(await db.deleteTodo(id))) return notFound(res, `No todo with id ${id}.`);
 
   return res.status(204).end();
 });
